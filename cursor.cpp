@@ -10,9 +10,9 @@
 Cursor::Cursor() {
 	// TODO Auto-generated constructor stub
 	pintar = false;
-	color = 0;
-	setX(0);
-	setY(0);
+	color = -1;
+	setX(-1);
+	setY(-1);
 
 }
 

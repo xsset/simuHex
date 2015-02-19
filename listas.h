@@ -12,6 +12,7 @@
 #include "debug.h"
 #include "nodoX.h"
 #include "nodoY.h"
+#include "utileria.h"
 
 class Lista {
 public:
@@ -27,6 +28,8 @@ public:
 	void impimirY(NodoX * temp);
 	void eliminar(NodoX * nodoX,NodoY * nodoY);
 	void vaciar();
+	void insertar(char valor);
+	void eliminar(char valor);
 	NodoY * buscar(int x, int y);
 	NodoX * inicioX;
 	NodoX * nodoUltimoMovimientoX;
@@ -36,6 +39,9 @@ public:
 
 	int numNodoX;
 	int numNodoY;
+	int nodoRojo;
+	int nodoNegro;
+	int nodoBlanco;
 
 };
 

@@ -94,9 +94,9 @@ void Matriz::valores() {
 		debug->setDebugString("Lista vacia\n");
 	}
 
-	debug->setDebugString("Imprimir Todos\n");
+	//debug->setDebugString("Imprimir Todos\n");
 	lista->impimirX();
-	debug->setDebugString("Saliendo Imprimir Todos\n");
+	//debug->setDebugString("Saliendo Imprimir Todos\n");
 //	Nueva->impimirY();
 }
 
@@ -144,6 +144,12 @@ void Matriz::cargarMalla() {
 
 //		debug->setDebugString("Linea leida\n");
 	}while(!feof(archivoTXT));
+}
+
+bool Matriz::estaVacia() {
+	if(lista->inicioX)
+		return false;
+	return true;
 }
 
 NodoY * Matriz::buscar(int x, int y)

@@ -116,25 +116,72 @@ void Malla::paint(int ventanaLargo, int ventanaAncho,bool lineas,int largoLado,i
 //				hexagono->relleno = true;
 //				hexagono->paint(colorMargenes, dc);
 //				hexagono->paintCoordenadas(dc);
-				if(vecinos)
-				{
-//					debug->setDebugString("Vecino Activo\n");
-					busquedaTodosVecinos(coordenadaVirtualX(cursor->x),coordenadaVirtualY(cursor->x,cursor->y), matriz,mVecinos,mLeidos);
-					this->colorLineas =  hexagono->convertirColor(COLORSELECCION);
-					hexagono->seleccionar = true;
-					mVecinos->valores();
-					mVecinos->vaciar();
-					mLeidos->vaciar();
-					//					paint(int ventanaLargo, int ventanaAncho,bool lineas,int largoLado,int zoom,wxColour colorMargenes ,wxBufferedPaintDC& dc )
-				}
-				else
-				{
-				}
+
 			}
 			else
 			{
 				this->colorLineas = colorMargenes;
 			}
+			if(vecinos)
+			{
+
+			//					debug->setDebugString("Vecino Entrar\n");
+			//					debug->setDebugString(coordenadaVirtualX(cursor->x));
+			//					debug->setDebugString(" ");
+			//					debug->setDebugString(coordenadaVirtualY(cursor->x,cursor->y));
+			//					debug->setDebugString("\n");
+			//					busquedaTodosVecinos(coordenadaVirtualX(cursor->x),coordenadaVirtualY(cursor->x,cursor->y), matriz,mVecinos,mLeidos);
+			//					this->colorLineas =  hexagono->convertirColor(COLORSELECCION);
+			//					hexagono->seleccionar = true;
+			//					debug->setDebugString("Listar Vecinos\n");
+			//					mVecinos->valores();
+			//					debug->setDebugString("Fin de la lista Vecinos\n");
+			//					mVecinos->vaciar();
+								if( matriz->buscar(coordenadaVirtualX(cursor->x),coordenadaVirtualY(cursor->x,cursor->y)))
+								{
+									if( matriz->buscar(coordenadaVirtualX(cursor->x),coordenadaVirtualY(cursor->x,cursor->y))->valor == BLANCO )
+									{
+										mLeidos->vaciar();
+									}
+									else
+									{
+//										debug->setDebugString("Vecino Entrar\n");
+//										debug->setDebugString(coordenadaVirtualX(cursor->x));
+//										debug->setDebugString(" ");
+//										debug->setDebugString(coordenadaVirtualY(cursor->x,cursor->y));
+//										debug->setDebugString("\n");
+										if(mLeidos->estaVacia())
+										{
+											busquedaTodosVecinos(coordenadaVirtualX(cursor->x),coordenadaVirtualY(cursor->x,cursor->y), matriz,mVecinos,mLeidos);
+										}
+										else if(mLeidos->buscar(x,y))
+										{
+											if(mLeidos->buscar(x,y)->valor != BLANCO)
+											{
+												this->colorLineas =  hexagono->convertirColor(COLORSELECCION);
+												hexagono->seleccionar = true;
+												//					debug->setDebugString("Listar Vecinos\n");
+												//					mVecinos->valores();
+												//					debug->setDebugString("Fin de la lista Vecinos\n");
+												//					mVecinos->vaciar();
+
+												this->colorRelleno = hexagono->convertirColor(COLORSELECCION);
+												hexagono->setRelleno(TRUE);
+											}
+										}
+									}
+								}
+								else
+								{
+									mLeidos->vaciar();
+								}
+								//					paint(int ventanaLargo, int ventanaAncho,bool lineas,int largoLado,int zoom,wxColour colorMargenes ,wxBufferedPaintDC& dc )
+
+			}
+			else
+			{
+			}
+
 //			debug->setDebugString(hexagono->estado);
 			hexagono->paint(lineas,this->colorRelleno,colorLineas, dc);
 			hexagono->setRelleno(false);
@@ -229,13 +276,13 @@ void Malla::clickCoordenadas(int x,int y,char color)
 //	matriz->vaciar();
 }
 
-int Malla::coordenadasMatrizX(int x) {
+int Malla::coordenadasMatrizX() {
 //	int inicioHexagonoX;
 
 	return cursor->x/((HEXAGONO04X-HEXAGONO02X)*largo*Zoom) ;
 }
 
-int Malla::coordenadasMatrizY(int x,int y) {
+int Malla::coordenadasMatrizY() {
 //	debug->setDebugString("coor ");
 //	debug->setDebugString(x);
 //	debug->setDebugString(",");
@@ -250,7 +297,7 @@ int Malla::coordenadasMatrizY(int x,int y) {
 //
 //	debug->setDebugString("Matriz Y :");
 
-	if((coordenadasMatrizX(x)) %2)
+	if((coordenadasMatrizX()) %2)
 	{
 //		debug->setDebugString(HEXAGONO03Y*largo*Zoom + HEXAGONO01Y*largo*Zoom);
 //		debug->setDebugString("-");
@@ -378,7 +425,7 @@ void Malla::calculaVecindad(int x, int y , int valor,Matriz * matriz, Matriz * m
 			char  k = 0;
 
 
-			NodoY * actual;
+//			NodoY * actual;
 			int coordenadaX;
 			int coordenadaY;
 			char valorActual ;
@@ -619,11 +666,11 @@ void Malla::aleatorio() {
 }
 
 int Malla::coordenadaVirtualX(int x) {
-	return coordenadasMatrizX(x) + viewInicialX;
+	return coordenadasMatrizX() + viewInicialX;
 }
 
 int Malla::coordenadaVirtualY(int x, int y) {
-	return coordenadasMatrizY(x,y) + viewInicialY;
+	return coordenadasMatrizY() + viewInicialY;
 }
 
 void Malla::aleatorio(int x, int y) {
@@ -652,60 +699,136 @@ void Malla::busquedaTodosVecinos(int x,int y,Matriz* matriz, Matriz* vecinos, Ma
 	NodoY *nodoY;
 	NodoX *nodoX;
 
-//	debug->setDebugString("BusquedaTodo")
-	if(leidos->buscar(x,y))
-		return;
+//	debug->setDebugString("Buscar ");
+//	debug->setDebugString(x);
+//	debug->setDebugString(" ");
+//	debug->setDebugString(y);
+//	debug->setDebugString("\n");
 
-
-	leidos->insertar(x,y,COLORSELECCION);
+	vecinos->inicio();
 	if(vecinos->nodoPadreX)
 	{
 		if(vecinos->buscar(x,y))
 		{
+//			debug->setDebugString("\tEliminando nodo de vecinos\n");
 			vecinos->eliminarMatriz(x,y);
 		}
 	}
-
-	if(!leidos->buscar(x,y))
+//	else
+//	{
+//		debug->setDebugString("\tNo existe nodo Vecinos\n");
+//
+//	}
+	//si ya esta leido el que buscamos ya no continua
+	if(leidos->buscar(x,y))
 	{
+//		debug->setDebugString("Valor ya leido\n");
+
+		vecinos->inicio();
+		//
+		if(vecinos->nodoPadreX)
+		{
+//			debug->setDebugString("\t ****Buscar vecinos**** \n ");
+			busquedaTodosVecinos(vecinos->nodoPadreX->x,vecinos->nodoHijoY->y,matriz,vecinos,leidos);
+		}
+//		else
+//		{
+//			debug->setDebugString("\t ****FIN de los vecinos**** \n ");
+//		}
+
+		return;
+	}
+
+
+//	debug->setDebugString("Insertar ");
+//	debug->setDebugString(x);
+//	debug->setDebugString(" ");
+//	debug->setDebugString(y);
+//	debug->setDebugString("\n");
+
+	nodoY = matriz->buscar(x,y);
+	//se inserta x y y
+	if (nodoY)
+		leidos->insertar(x,y,nodoY->valor);
+	else
+		leidos->insertar(x,y,BLANCO);
+
+//	nodoY = NULL;
+
+	//si existe en los vecinos se elimina
+//	debug->setDebugString("Inicio imprimir leidos\n");
+//	leidos->valores();
+//	debug->setDebugString("Fin imprimir leidos\n");
+//
+//
+//	debug->setDebugString("Inicio imprimir Vecinos\n");
+//	vecinos->valores();
+//	debug->setDebugString("Fin imprimir Vecinos\n");
+
+
+	//
+//	if(!leidos->buscar(x,y))
+//	{
+		//si existe en la matriz
 		nodoY = matriz->buscar(x,y);
 		if(nodoY)
 		{
 			nodoX = matriz->nodoPadreX;
+			//si el nodoY es blanco no se busca los vecinos
 			if(nodoY->valor!=BLANCO)
 			{
 //				for(int x = 6 ; x > 0; x--)
 //				{
 //					leidos->insertar(nodoX->x,nodoY->y,COLORSELECCION);
 //					leidos->valores();
-					busquedaVecinos(matriz,vecinos,x,y);
+//				debug->setDebugString("\t Buscar vecinos \n ");
+				busquedaVecinos(matriz,vecinos,x,y);
 //					vecinos->valores();
 //				}
 			}
+//			else
+//			{
+//				debug->setDebugString("\t El nodo es blanco \n ");
+//			}
 //	leidos->inicio();
-			vecinos->inicio();
-			if(vecinos->nodoPadreX)
-				busquedaTodosVecinos(vecinos->nodoPadreX->x,vecinos->nodoHijoY->y,matriz,vecinos,leidos);
+//			vecinos->inicio();
+//			if(vecinos->nodoPadreX)
+//				busquedaTodosVecinos(vecinos->nodoPadreX->x,vecinos->nodoHijoY->y,matriz,vecinos,leidos);
 		}
-	}
-	else if(vecinos->buscar(x,y))
-	{
-		vecinos->eliminarMatriz(x,y);
-		vecinos->inicio();
-		if(vecinos->nodoPadreX)
-			busquedaTodosVecinos(vecinos->nodoPadreX->x,vecinos->nodoHijoY->y,matriz,vecinos,leidos);
-	}
-	vecinos->inicio();
-	if(vecinos->nodoPadreX)
-		busquedaTodosVecinos(vecinos->nodoPadreX->x,vecinos->nodoHijoY->y,matriz,vecinos,leidos);
+//	}
+
+	//
+//	if(vecinos->buscar(x,y))
+//	{
+////		vecinos->eliminarMatriz(x,y);
+//		vecinos->inicio();
+//		if(vecinos->nodoPadreX)
+//			busquedaTodosVecinos(vecinos->nodoPadreX->x,vecinos->nodoHijoY->y,matriz,vecinos,leidos);
+//	}
 //			{
 //			}
 //	}while();
+		vecinos->inicio();
+		//
+		if(vecinos->nodoPadreX)
+		{
+//			debug->setDebugString("\t ****Buscar vecinos 2**** \n ");
+			busquedaTodosVecinos(vecinos->nodoPadreX->x,vecinos->nodoHijoY->y,matriz,vecinos,leidos);
+		}
+//		else
+//		{
+//			debug->setDebugString("\t ****FIN de los vecinos 2**** \n ");
+//		}
+
 }
 
 void Malla::busquedaVecinos(Matriz* matriz,Matriz * vecinos, int coordenadaX, int coordenadaY) {
+
+//	debug->setDebugString("Inicio busquedaVecinos leidos\n");
 	int i = 0;
 	int j = 0;
+
+
 	NodoY * nodoY;
 	for(int k = 0; k < 6 ; k++)
 	{
@@ -755,6 +878,7 @@ void Malla::busquedaVecinos(Matriz* matriz,Matriz * vecinos, int coordenadaX, in
 			vecinos->insertar(i,j,nodoY->valor);
 		else
 			vecinos->insertar(i,j,BLANCO);
-
 	}
+//	vecinos->valores();
+//	debug->setDebugString("Terminando busquedaVecinos leidos\n");
 }

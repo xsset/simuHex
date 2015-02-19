@@ -90,6 +90,8 @@ private:
     wxString msg;
     wxString msg2;
     wxString msg3;
+    wxString msg4;
+    wxString msg5;
     wxString status;
     std::string msg3Estado;
     std::string msg3Color;

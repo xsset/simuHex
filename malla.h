@@ -41,8 +41,8 @@ class Malla
 		void clickCoordenadas(int x,int y,char color);
 		void paint(int ventanaLargo, int ventanaAncho,bool lineas,int largoLado,int zoom,wxColour colorMargenes ,wxBufferedPaintDC& dc );
 
-		int coordenadasMatrizX(int x);
-		int coordenadasMatrizY(int x,int y);
+		int coordenadasMatrizX();
+		int coordenadasMatrizY();
 		int coordenadaVirtualX(int x);
 		int coordenadaVirtualY(int x,int y);
 //		void setNumeHexagonalX(int numHexagonalX);

@@ -36,6 +36,7 @@ public:
 	void abrirArchivoEscritura(char * Archivo);
 	void abrirArchivoLectura(char * Archivo);
 	void cerrarArchivo();
+	bool estaVacia();
 //	void insertarVecinos(Lista * nodo);
 	NodoY * buscar(int x, int y);
 //	Lista * busquedaOrdenada(int x,int y);

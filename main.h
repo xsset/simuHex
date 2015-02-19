@@ -10,5 +10,6 @@ class MyApp : public wxApp
 public:
     // Llamamos el m��todo de inicio de la aplicaci��n
      bool OnInit();
+     MyFrame *frame;
 };
 

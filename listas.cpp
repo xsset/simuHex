@@ -18,6 +18,9 @@ Lista::Lista() {
 	inicioX = NULL;
 	numNodoX = 0;
 	numNodoY = 0;
+	nodoRojo = 0;
+	nodoNegro = 0;
+	nodoBlanco = 0;
 //	if( inicioX)
 //		debug->setDebugString("inicioX\n");
 //	else
@@ -231,6 +234,7 @@ NodoY * Lista::insertarY(int y,NodoX * tempX,char valor)
 		tempX->nodoY = nuevo;
 		temp = nuevo;
 		numNodoY++;
+		insertar(valor);
 		return temp;
 	}
 
@@ -245,7 +249,8 @@ NodoY * Lista::insertarY(int y,NodoX * tempX,char valor)
 //			debug->setDebugString(" = ");
 //			debug->setDebugString(temp->y);
 //			debug->setDebugString("\n");
-
+			eliminar(temp->valor);
+			insertar(valor);
 			temp->valor = valor;
 			return temp;
 		}
@@ -266,6 +271,7 @@ NodoY * Lista::insertarY(int y,NodoX * tempX,char valor)
 			}
 			//			temp->siguiente = nuevo;
 			numNodoY++;
+			insertar(valor);
 			return nuevo;
 
 		}
@@ -286,6 +292,7 @@ NodoY * Lista::insertarY(int y,NodoX * tempX,char valor)
 					nuevo->siguiente = temp->siguiente;
 					temp->siguiente = nuevo;
 					numNodoY++;
+					insertar(valor);
 					return nuevo;
 				}
 				// si x es igual al x del temp->siguiente
@@ -296,6 +303,8 @@ NodoY * Lista::insertarY(int y,NodoX * tempX,char valor)
 //					debug->setDebugString(" = Siguiente: ");
 //					debug->setDebugString(temp->siguiente->y);
 //					debug->setDebugString("\n");
+					eliminar(temp->siguiente->valor);
+					insertar(valor);
 					temp->siguiente->valor = valor;
 					return temp->siguiente;
 				}
@@ -311,6 +320,8 @@ NodoY * Lista::insertarY(int y,NodoX * tempX,char valor)
 //				debug->setDebugString("se actualizo valor de ");
 //				debug->setDebugString(y);
 //				debug->setDebugString("\n");
+				eliminar(temp->valor);
+				insertar(valor);
 				temp->valor = valor;
 				return temp;
 			}
@@ -325,6 +336,7 @@ NodoY * Lista::insertarY(int y,NodoX * tempX,char valor)
 				tempX->nodoY = nuevo;
 				nuevo->valor = valor;
 				numNodoY++;
+				insertar(valor);
 				return nuevo;
 			}
 		}
@@ -340,6 +352,7 @@ NodoY * Lista::insertarY(int y,NodoX * tempX,char valor)
 			temp->siguiente = nuevo;
 			nuevo->valor = valor;
 			numNodoY++;
+			insertar(valor);
 			return nuevo;
 
 		}
@@ -355,36 +368,36 @@ void Lista::impimirX() {
 	NodoX * temp = inicioX;
 //	NodoY * tempY = inicioY;
 
-	debug->setDebugString("imprimir X--\n");
+	debug->setDebugString("\t imprimir X--\n");
 	if (temp)
 	{
-		debug->setDebugString("existe X\n");
+		debug->setDebugString("\t \t existe X\n");
 
 	}
 	else
 	{
 
-		debug->setDebugString("No existe X\n");
+		debug->setDebugString("\t \t No existe X\n");
 	}
 	while(temp)
 	{
-		debug->setDebugString("valor x = ");
+		debug->setDebugString("\t \t \t x = ");
 		debug->setDebugString(temp->x);
 		debug->setDebugString("\n");
 
 		impimirY(temp);
 		temp = temp->siguiente;
 	}
-	debug->setDebugString("Saliendo X--\n");
+	debug->setDebugString("\t Saliendo X--\n");
 }
 
 void Lista::impimirY(NodoX * tempX) {
 	NodoY * temp = tempX->nodoY;
 
-	debug->setDebugString("imprimir Y--\n");
+	debug->setDebugString("\t imprimir Y--\n");
 	while(temp)
 	{
-		debug->setDebugString("y = ");
+		debug->setDebugString("\t \t \t y = ");
 		debug->setDebugString(temp->y);
 		debug->setDebugString(", valor = ");
 		debug->setDebugString((int)temp->valor);
@@ -393,7 +406,7 @@ void Lista::impimirY(NodoX * tempX) {
 
 		temp = temp->siguiente;
 	}
-	debug->setDebugString("Saliendo --\n");
+	debug->setDebugString("\t Saliendo --\n");
 }
 
 void Lista::eliminar(NodoX* nodoX, NodoY* nodoY) {
@@ -429,6 +442,8 @@ void Lista::eliminar(NodoX* nodoX, NodoY* nodoY) {
 				if(nodoX->nodoY == nodoY)
 					nodoX->nodoY = nodoY->siguiente;
 				numNodoY--;
+				eliminar(nodoY->valor);
+//				insertar(valor);
 				delete nodoY;
 				if(! nodoX->nodoY)
 				{
@@ -470,6 +485,25 @@ void Lista::eliminar(NodoX* nodoX, NodoY* nodoY) {
 		}
 	}
 
+}
+
+void Lista::insertar(char valor)
+{
+	if(valor == BLANCO)
+		nodoBlanco++;
+	else if(valor == ROJO)
+		nodoRojo++;
+	else if(valor == NEGRO)
+		nodoNegro++;
+}
+
+void Lista::eliminar(char valor) {
+	if(valor == BLANCO)
+		nodoBlanco--;
+	else if(valor == ROJO)
+		nodoRojo--;
+	else if(valor == NEGRO)
+		nodoNegro--;
 }
 
 NodoY* Lista::buscar(int x, int y)

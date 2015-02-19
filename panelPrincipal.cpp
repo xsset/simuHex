@@ -79,8 +79,11 @@ void MyFrame::OnPaint(wxPaintEvent& event)
         if (DEBUG)
         {
         	dc.SetTextForeground(*wxBLUE);
-        	msg =  wxString::Format(wxT("%i %i"), malla->coordenadasMatrizX(cursor->x),malla->coordenadasMatrizY(cursor->x,  cursor->y));
-        	msg2 =  wxString::Format(wxT("%i %i"), malla->coordenadaVirtualX(cursor->x),malla->coordenadaVirtualY(cursor->x,  cursor->y));
+        	msg =  wxString::Format(wxT("%i %i"), malla->coordenadasMatrizX(),malla->coordenadasMatrizY());
+        	msg5 =  wxString::Format(wxT("%i %i"), malla->coordenadaVirtualX(cursor->x),malla->coordenadaVirtualY(cursor->x,  cursor->y));
+        	msg2 =  wxString::Format(wxT("BLANCO: %i"), malla->matriz->lista->nodoBlanco);
+        	msg3 =  wxString::Format(wxT("NEGRO: %i"), malla->matriz->lista->nodoNegro);
+        	msg4 =  wxString::Format(wxT("ROJO: %i"), malla->matriz->lista->nodoRojo);
 
 //        	if (puntero->activo)
 //        		msg3Estado = "Activo";
@@ -100,7 +103,10 @@ void MyFrame::OnPaint(wxPaintEvent& event)
 //         dc.SetTextForeground(wxWHITE);
         	dc.DrawText(msg, 10, 00);
         	dc.DrawText(msg2, 10, 20);
-        	dc.DrawText(status, 10, 40);
+        	dc.DrawText(msg3, 10, 40);
+        	dc.DrawText(msg4, 10, 60);
+        	dc.DrawText(msg5, 10, 80);
+//        	dc.DrawText(status, 10, 100);
 //        	dc.DrawText(msg4,10,60);
 //        // dc.DrawPoint(event.GetPosition());
 //        	dc.SetPen(wxNullPen);
@@ -199,6 +205,9 @@ void MyFrame::OnVecinos(wxCommandEvent& event) {
 	 if (checkboxVecinos->GetValue())
 	 {
 //		 debugObjeto->setDebugString("Vecino Activo\n");
+//		 debugObjeto->setDebugString("Inicio Lista Actual Mmatriz\n");
+//		 malla->matriz->valores();
+//		 debugObjeto->setDebugString("Fin Lista Actual Mmatriz\n");
 		 vecinos = true;
 	  } else {
 		  vecinos = false;

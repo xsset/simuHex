@@ -22,7 +22,7 @@ IMPLEMENT_APP(MyApp)
 bool MyApp::OnInit()
 {
     // Creamos la ventana principal de la aplicaci��n
-    MyFrame *frame = new MyFrame(wxT("Hexagonos"));
+    frame = new MyFrame(wxT("Hexagonos"));
     frame->SetSize(VENTANAX,VENTANAY);
     frame->Show(true);
 
