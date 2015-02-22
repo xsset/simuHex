@@ -57,6 +57,11 @@
 #define VENTANAX 900
 #define VENTANAY 800
 
+#define ARRIBA 0
+#define ABAJO 1
+#define IZQUIERDA 2
+#define DERECHA 3
+
 
 
 

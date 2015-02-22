@@ -228,7 +228,7 @@ NodoY * Lista::insertarY(int y,NodoX * tempX,char valor)
 	//si es el inicio de la lista
 	if(! temp)
 	{
-//		debug->setsDebugString("inicioY\n");
+//		debug->setDebugString("inicioY\n");
 		nuevo = new NodoY(y);
 		nuevo->valor = valor;
 		tempX->nodoY = nuevo;
@@ -425,66 +425,122 @@ void Lista::eliminar(NodoX* nodoX, NodoY* nodoY) {
 //		debug->setDebugString("\n");
 //	}
 
-	if(nodoX && nodoY)
+//	if(nodoX->x ==49 && nodoY->y == -1)
+//	{
+//		nodoX->x;
+//	}
+
+	if(nodoX || nodoY)
 	{
-		temporalY = nodoX->nodoY;
-		anteriorY = temporalY;
-
-		while( temporalY)
+		if(nodoY)
 		{
+			//como es la primera vez no existe anterior
+			temporalY = nodoX->nodoY;
 			anteriorY = temporalY;
-			if(temporalY == nodoY)
-			{
-				anteriorY->siguiente = nodoY->siguiente;
-//				debug->setDebugString("eliminandoY : ");
-//				debug->setDebugString(nodoY->y);
-//				debug->setDebugString("\n");
-				if(nodoX->nodoY == nodoY)
-					nodoX->nodoY = nodoY->siguiente;
-				numNodoY--;
-				eliminar(nodoY->valor);
-//				insertar(valor);
-				delete nodoY;
-				if(! nodoX->nodoY)
-				{
-					temporalX = inicioX;
-					while(temporalX)
-					{
-						anteriorX = temporalX;
-						if(temporalX == nodoX)
-						{
-							anteriorX->siguiente = nodoX->siguiente;
-//							debug->setDebugString("eliminandoX : ");
-//							debug->setDebugString(nodoX->x);
-//							debug->setDebugString("\n");
-							if(inicioX == nodoX)
-							{
-								inicioX = nodoX->siguiente;
-							}
-							numNodoX--;
-							delete nodoX;
-//								impimirX();
-//								debug->setDebugString("Saliendo eliminar\n");
-							return;
 
-						}
-						else
-						{
-							temporalX = temporalX->siguiente;
-						}
-					}
-				}
-//				impimirX();
-//				debug->setDebugString("Saliendo eliminar\n");
-				return;
-			}
-			else
+			while( temporalY)
 			{
-				temporalY = temporalY->siguiente;
+
+				if(temporalY == nodoY )
+				{
+					//				this->impimirY(nodoX);
+//					debug->setDebugString("eliminandoY : ");
+//					debug->setDebugString(temporalY->y);
+//					debug->setDebugString("\n");
+//
+//					debug->setDebugString("AnterioY : ");
+//					debug->setDebugString(anteriorY->y);
+//					debug->setDebugString("\n");
+					if(temporalY->siguiente)
+					{
+//						debug->setDebugString("Siguiente : ");
+//						debug->setDebugString(temporalY->siguiente->y);
+//						debug->setDebugString("\n");
+
+					}
+					//
+					//				this->impimirY(nodoX);
+					if(nodoX->nodoY == temporalY)
+					{
+						nodoX->nodoY = temporalY->siguiente;
+						if(!temporalY->siguiente)
+							nodoX->nodoY = NULL;
+					}
+					else
+					{
+						anteriorY->siguiente = temporalY->siguiente;
+					}
+					numNodoY--;
+					eliminar(temporalY->valor);
+					//				insertar(valor);
+					delete temporalY;
+					temporalY = NULL;
+										//				impimirX();
+//					debug->setDebugString("Saliendo eliminar2\n");
+//					return;
+				}
+				else
+				{
+					anteriorY = temporalY;
+					temporalY = temporalY->siguiente;
+				}
 			}
 		}
-	}
+		if(!nodoX->nodoY)
+		{
+			//					temporalX = nodoX;
+			temporalX = inicioX;
+			anteriorX = temporalX;
 
+			while(temporalX)
+			{
+				if(temporalX == nodoX)
+				{
+
+//					debug->setDebugString("eliminandoX : ");
+//					debug->setDebugString(nodoX->x);
+//					debug->setDebugString("\n");
+					if(inicioX == nodoX)
+					{
+						inicioX = temporalX->siguiente;
+						if(!temporalX->siguiente)
+							inicioX = NULL;
+						else if(inicioX == inicioX->siguiente)
+							inicioX = NULL;
+					}
+					else
+					{
+						anteriorX->siguiente = nodoX->siguiente;
+					}
+//					if(inicioX == NULL)
+//					{
+//						debug->setDebugString("Inicio NULL\n");
+//						debug->setDebugString("num: ");
+//						debug->setDebugString(numNodoX);
+//						debug->setDebugString("\n");
+//					}
+//					if(numNodoX == 1)
+//					{
+//						NULL;
+//					}
+					numNodoX--;
+					delete temporalX;
+					//								impimirX();
+					//								debug->setDebugString("Saliendo eliminar\n");
+//					if(!inicioX)
+//						delete this;
+					return;
+
+				}
+				else
+				{
+					anteriorX = temporalX;
+					temporalX = temporalX->siguiente;
+				}
+			}
+		}
+
+	}
 }
 
 void Lista::insertar(char valor)

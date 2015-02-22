@@ -15,6 +15,7 @@
 #include <wx/checkbox.h>
 #include <wx/spinbutt.h>
 #include <wx/timer.h>
+#include <wx/listctrl.h>
 
 
 
@@ -44,6 +45,16 @@
 #define ID_CHECKVECINO 115
 #define ID_ABRIRARCHIVO 116
 #define ID_GUARDARARCHIVO 117
+#define ID_GUARDARFORMA 118
+#define ID_ABRIRARCHIVO 119
+#define ID_SOMETHING 120
+#define ID_SOMETHING_ELSE 121
+#define ID_MOVERFORMA 122
+#define ID_DETENERFORMA 123
+#define ID_COPIARFORMA 124
+#define ID_ELIMINARFORMA 125
+//#define ID_
+
 
 class MyFrame : public wxFrame
 {
@@ -78,6 +89,11 @@ public:
     void OnTimer(wxTimerEvent& event);
     void OnGuardar(wxCommandEvent& WXUNUSED(event));
     void OnAbrir(wxCommandEvent& WXUNUSED(event));
+    void OnGuardarForma(wxCommandEvent& WXUNUSED(event));
+    void OnAbrirForma(wxCommandEvent& WXUNUSED(event));
+    void OnListRightClick(wxListEvent &evt);
+    void OnPopupClick(wxCommandEvent &evt);
+    void OnEventMouse(wxMouseEvent &evt);
 
 
 
@@ -92,7 +108,9 @@ private:
     wxString msg3;
     wxString msg4;
     wxString msg5;
-    wxString status;
+    wxString msg6;
+//    wxString status;
+//    wxString valor;
     std::string msg3Estado;
     std::string msg3Color;
     std::string msg3String;

@@ -25,8 +25,13 @@
 #include <wx/dcbuffer.h>
 #include <wx/pen.h>
 
+#define PORCENTAJE 1
+
 #ifndef _MALLA_
 #define _MALLA_
+
+
+
 
 class Malla
 {
@@ -48,25 +53,47 @@ class Malla
 //		void setNumeHexagonalX(int numHexagonalX);
 //		void setNumeHexagonalY(int numHexagonalY);
 		void evolucionar();
-		void calculaVecindadcindad(Matriz * matrizTemporal);
 		void calculaVecindad(int x, int y , int valor,Matriz * matriz, Matriz * matrizTemporal,Matriz * vecinos);
 		void aleatorio();
 		void aleatorio(int x, int y);
 		void busquedaTodosVecinos(int x,int y,Matriz * matriz,Matriz * vecinos,Matriz * leidos);
 		void busquedaVecinos(Matriz * matriz,Matriz * vecinos,int x, int y);
+		void eliminarBlancos(Matriz * matriz);
+		void buscarVecinosMouse();
+		void moverHexagonos(char Direccion,int posiciones,Matriz * temp,Matriz * nueva);
+		void limpiarBanderasVecinos();
+		void moverHexagonoHacia(Cursor * cursor, Matriz* vieja, Matriz * nueva);
+		void imprimirBanderas();
+		void insertarMover();
+		void copiarMatriz();
+		void eliminarMatriz();
+		void clickIzquierdo();
+		void accionMalla(char accion);
+		void calcularPorcentaje();
+		void limitesPantalla();
+//		void cli
+//		void moverHexagonos(char Direccion,int posiciones,Matriz * temp);
+//		void mover
 
 		bool lineas;
 		Matriz * matriz;
 		Matriz * mVecinos;
 		Matriz * mLeidos;
+		Matriz * mCopiar;
+		Matriz * mEliminar;
+		Matriz * mMover;
+		Matriz * mTemporal;
 		wxColour colorLineas;
 		wxColour colorRelleno;
 		Hexagono *hexagono;
-//		NodoY * actual;
+		NodoY * actual;
 
 //	private:
 		DebugClass * debug;
 		Cursor * cursor;
+		Cursor * cursorCelulas;
+		Cursor * cursorAnteriorCelulas;
+		Cursor * cursorPorcentaje;
 		Punto * PuntoInicial;
 		int numHexagonalX;
 		int numHexagonalY;
@@ -78,7 +105,11 @@ class Malla
 		int viewFinalX;
 		int viewFinalY;
 		int evoluciones;
+		bool vecinosPersistentes;
 		bool vecinos;
+		bool mover;
+		bool copiar;
+		bool eliminar;
 };
 
 //void hex(double initX, double initY,float largo,wxPen color ,bool relleno,wxBufferedPaintDC &dc );

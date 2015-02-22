@@ -34,24 +34,105 @@ void MyFrame::OnGuardar(wxCommandEvent&) {
 
 void MyFrame::OnAbrir(wxCommandEvent&) {
 	malla->matriz->vaciar();
-	 malla->matriz->abrirArchivoLectura("Salida.txt");
-	 malla->matriz->cargarMalla();
-	 malla->matriz->cerrarArchivo();
+	malla->matriz->abrirArchivoLectura("Salida.txt");
+	malla->matriz->cargarMalla();
+	malla->matriz->cerrarArchivo();
+//	 malla->matriz->valores();
 	 Refresh();
 }
 
+void MyFrame::OnPopupClick(wxCommandEvent &evt)
+ {
+// 	void *data=static_cast<wxMenu *>(evt.GetEventObject())->GetClientData();
+ 	switch(evt.GetId()) {
+ 		case ID_GUARDARFORMA:
+// 			debugObjeto->setDebugString("Guardando Forma\n");
+ 			this->OnGuardarForma(evt);
+ 			break;
+ 		case ID_MOVERFORMA:
+ 			malla->mover = true;
+ 			malla->vecinosPersistentes = true;
+// 			malla->moverHexagonos(DERECHA,3, malla->mLeidos,malla->mMover);
+ 			break;
+// 		case ID_DETENERFORMA:
+// 			malla->mover = false;
+// 			malla->vecinosPersistentes = false;
+ 			break;
+ 		case ID_COPIARFORMA:
+ 			malla->copiar = true;
+ 			malla->vecinosPersistentes = true;
+ 			break;
+ 		case ID_ELIMINARFORMA:
+ 			malla->eliminarMatriz();
+ 			break;
+ 	}
+// 	Refresh();
+ }
+
+//void MyFrame::OnListRightClick(wxListEvent &evt)
+// {
+//
+// }
+
 // La tabla de eventos de MyFrame
+
+void MyFrame::OnGuardarForma(wxCommandEvent&) {
+	malla->mLeidos->abrirArchivoEscritura("Forma.txt");
+	malla->mLeidos->guardarMalla();
+	malla->mLeidos->cerrarArchivo();
+}
+
+
+void MyFrame::OnAbrirForma(wxCommandEvent&) {
+	malla->mLeidos->vaciar();
+	malla->mLeidos->abrirArchivoLectura("Forma.txt");
+	malla->mLeidos->cargarMalla();
+	malla->mLeidos->cerrarArchivo();
+}
+
+void MyFrame::OnEventMouse(wxMouseEvent& evt) {
+	if(evt.RightDown())
+	{
+		if(!malla->mLeidos->estaVacia())
+		{
+			 	wxMenu mnu;
+			 	mnu.Append(ID_GUARDARFORMA,"Guardar Forma");
+			 	mnu.Append(ID_COPIARFORMA,"Copiar Forma");
+			 	mnu.Append(ID_ELIMINARFORMA,"Eliminar Forma");
+//			 	if(malla->mover)
+//			 		mnu.Append(ID_DETENERFORMA,"Detener Forma");
+//			 	else
+			 		mnu.Append(ID_MOVERFORMA,"Mover Forma");
+			 	mnu.Connect(wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&MyFrame::OnPopupClick, NULL, this);
+			 	PopupMenu(&mnu);
+		}
+//		else
+//			debugObjeto->setDebugString("Click Derecho Else\n");
+//			debugObjeto->setDebugString("Click Derecho\n");
+//			void *data = reinterpret_cast<void *>(evt.GetItem().GetData());
+	}
+	else if(evt.LeftDown())
+	{
+		malla->clickIzquierdo();
+//		debugObjeto->setDebugString("Click Izquierdo\n");
+	}
+	Refresh();
+}
+
 BEGIN_EVENT_TABLE(MyFrame, wxFrame)
     EVT_MENU(wxID_ABOUT, MyFrame::OnAbout)
     EVT_MENU(wxID_EXIT, MyFrame::OnQuit)
     EVT_MOTION(MyFrame::OnMotion)
     EVT_PAINT(MyFrame::OnPaint)
-	EVT_LEFT_DOWN(MyFrame::OnClickLeft)
+//	EVT_LEFT_DOWN(MyFrame::OnClickLeft)
 	EVT_CHAR(MyFrame::OnChar)
 	EVT_KEY_DOWN(MyFrame::OnKeyDown)
 	EVT_KEY_UP(MyFrame::OnKeyUp)
 	EVT_SIZE(MyFrame::OnResize)
 	EVT_TIMER(ID_TIMER, MyFrame::OnTimer)
+	EVT_MOUSE_EVENTS(MyFrame::OnEventMouse)
+
+//	EVT_
 END_EVENT_TABLE()
 
 //paint
@@ -67,7 +148,7 @@ void MyFrame::OnPaint(wxPaintEvent& event)
 //        cursor->color= 1;
         Clear(dc);
         malla->paint(pantalla->x,pantalla->y,lineas,1,Zoom,*wxBLUE,dc);
-        status =  wxString::Format(wxT("Evoluciones: %i \n Celulas %i"),malla->evoluciones,malla->matriz->lista->numNodoY);
+//        status =  wxString::Format(wxT("Evoluciones: %i \n Celulas %i"),malla->evoluciones,malla->matriz->lista->numNodoY);
 //       dc.DrawLine(0, 0, mouseX,mouseY );
 //       Hexagono hex = Hexagono(mouseX,mouseY,1,1);
 //       hex.paint(dc);
@@ -80,7 +161,8 @@ void MyFrame::OnPaint(wxPaintEvent& event)
         {
         	dc.SetTextForeground(*wxBLUE);
         	msg =  wxString::Format(wxT("%i %i"), malla->coordenadasMatrizX(),malla->coordenadasMatrizY());
-        	msg5 =  wxString::Format(wxT("%i %i"), malla->coordenadaVirtualX(cursor->x),malla->coordenadaVirtualY(cursor->x,  cursor->y));
+        	msg5 =  wxString::Format(wxT("%i %i"), malla->cursorCelulas->x,malla->cursorCelulas->y);
+        	msg6 =  wxString::Format(wxT("%i %i"), malla->cursorPorcentaje->x,malla->cursorPorcentaje->y);
         	msg2 =  wxString::Format(wxT("BLANCO: %i"), malla->matriz->lista->nodoBlanco);
         	msg3 =  wxString::Format(wxT("NEGRO: %i"), malla->matriz->lista->nodoNegro);
         	msg4 =  wxString::Format(wxT("ROJO: %i"), malla->matriz->lista->nodoRojo);
@@ -106,6 +188,7 @@ void MyFrame::OnPaint(wxPaintEvent& event)
         	dc.DrawText(msg3, 10, 40);
         	dc.DrawText(msg4, 10, 60);
         	dc.DrawText(msg5, 10, 80);
+        	dc.DrawText(msg6, 10, 100);
 //        	dc.DrawText(status, 10, 100);
 //        	dc.DrawText(msg4,10,60);
 //        // dc.DrawPoint(event.GetPosition());
@@ -211,16 +294,18 @@ void MyFrame::OnVecinos(wxCommandEvent& event) {
 		 vecinos = true;
 	  } else {
 		  vecinos = false;
+		  malla->mLeidos->vaciar();
+		  malla->limpiarBanderasVecinos();
 	  }
 	 malla->vecinos = vecinos;
-	  Refresh();
+	 Refresh();
 }
 void MyFrame::OnAutomatico(wxCommandEvent& event) {
 	if(checkboxAutomatico->GetValue())
 	{
 		Automatico = true;
 		m_timer->Start(500);
-
+		malla->mLeidos->vaciar();
 	}
 	else
 	{
@@ -564,7 +649,7 @@ MyFrame::MyFrame(const wxString& title) : wxFrame(NULL, wxID_ANY, title)
 //    // Creamos una barra de estado (s��lo por diversi��n :D)
 //    CreateStatusBar();
     this->CreateStatusBar( 1, wxST_SIZEGRIP, wxID_ANY );
-    SetStatusText(status);
+//    SetStatusText(status);
 
 
 //    SetStatusText("Texto");

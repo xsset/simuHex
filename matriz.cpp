@@ -51,8 +51,8 @@ void Matriz::insertar(int x, int y, char valor)
 
 
 	lista-> insertarN(x,y,valor);
-	nodoHijoY = lista->nodoUltimoMovimientoY;
-	nodoPadreX = lista->nodoUltimoMovimientoX;
+	nodoHijoY = this->lista->nodoUltimoMovimientoY;
+	nodoPadreX = this->lista->nodoUltimoMovimientoX;
 //	numX = listaInicio->numNodoX;
 //	numY = listaInicio->numNodoY;
 //	numCelulas = numY;
@@ -149,7 +149,16 @@ void Matriz::cargarMalla() {
 bool Matriz::estaVacia() {
 	if(lista->inicioX)
 		return false;
-	return true;
+	else
+	{
+//		debug->setDebugString("\tVacio");
+//		debug->setDebugString(" X: ");
+//		debug->setDebugString(lista->numNodoX);
+//		debug->setDebugString(" Y: ");
+//		debug->setDebugString(lista->numNodoY);
+//		debug->setDebugString("\n");
+		return true;
+	}
 }
 
 NodoY * Matriz::buscar(int x, int y)
@@ -160,10 +169,10 @@ NodoY * Matriz::buscar(int x, int y)
 //	debug->setDebugString(" Y: ");
 //	debug->setDebugString(y);
 //	debug->setDebugString("\n");
-	nodoHijoY = lista->buscar(x,y);
+	nodoHijoY = this->lista->buscar(x,y);
 	if( nodoHijoY)
 	{
-		nodoPadreX = lista->nodoUltimoMovimientoX;
+		nodoPadreX = this->lista->nodoUltimoMovimientoX;
 		return nodoHijoY;
 	}
 	else
@@ -191,7 +200,7 @@ NodoY * Matriz::buscar(int x, int y)
 	return NULL;
 }
 
-void Matriz::eliminarMatriz(NodoX * nodoX,NodoY * nodoY) {
+void Matriz::eliminar(NodoX * nodoX,NodoY * nodoY) {
 //	char valor;
 //	NodoY * nodoanterior;
 //	NodoY * nodoTemporal;
@@ -210,9 +219,11 @@ void Matriz::eliminarMatriz(NodoX * nodoX,NodoY * nodoY) {
 //		nodo->eliminar();
 //		size--;
 	lista->eliminar(nodoX,nodoY);
+//	if(lista->numNodoX == 0)
+//		delete lista;
 }
 
-void Matriz::eliminarMatriz(int x,int y) {
+void Matriz::eliminar(int x,int y) {
 //	char valor;
 	NodoX * nodoX;
 	NodoY * nodoY;
@@ -345,7 +356,10 @@ void Matriz::inicio() {
 	if(nodoPadreX)
 		nodoHijoY = nodoPadreX->nodoY;
 	else
+	{
 		nodoHijoY = NULL;
+//		debug->setDebugString("Nodo Padre No existe\n");
+	}
 }
 
 bool Matriz::siguiente() {
@@ -383,13 +397,20 @@ bool Matriz::siguiente() {
 void Matriz::vaciar() {
 
 	inicio();
-	while(lista->inicioX)
+	while(lista)
 	{
-		inicio();
-		eliminarMatriz(nodoPadreX,nodoHijoY);
-//		if(listaInicio->inicioX)
-//			debug->setDebugString/("lista no vacia \n");
-//		listaInicio
+		if(lista->inicioX)
+		{
+			inicio();
+			eliminar(nodoPadreX,nodoHijoY);
+			//		if(listaInicio->inicioX)
+			//			debug->setDebugString/("lista no vacia \n");
+			//		listaInicio
+		}
+		else
+		{
+			return;
+		}
 	}
 }
 
@@ -460,4 +481,35 @@ void Matriz::guardarMalla() {
 	}
 
 	debug->setDebugString("guardado Terminado\n");
+}
+
+void Matriz::copiar(Matriz* matriz) {
+//	return;
+	if(!estaVacia())
+		vaciar();
+	if(matriz->estaVacia())
+		return;
+
+	matriz->inicio();
+	do
+	{
+		insertar(matriz->nodoPadreX->x,matriz->nodoHijoY->y,matriz->nodoHijoY->valor);
+	}
+	while(matriz->siguiente());
+	valores();
+}
+
+void Matriz::insertar(Matriz* matriz) {
+	matriz->inicio();
+	do{
+		this->insertar(matriz->nodoPadreX->x,matriz->nodoHijoY->y,matriz->nodoHijoY->valor);
+	}while(matriz->siguiente());
+}
+
+void Matriz::eliminar(Matriz* matriz) {
+	matriz->inicio();
+		do{
+			this->eliminar(matriz->nodoPadreX->x,matriz->nodoHijoY->y);
+		}while(matriz->siguiente());
+
 }

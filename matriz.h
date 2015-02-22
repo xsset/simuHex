@@ -23,8 +23,8 @@ public:
 	void insertar(int x,int y,char valor);
 //	void insertarOrdenada(int x,int y,char valor);
 //	void obtener(int x, int y);
-	void eliminarMatriz(NodoX * nodoX,NodoY * nodoY);
-	void eliminarMatriz(int x,int y);
+	void eliminar(NodoX * nodoX,NodoY * nodoY);
+	void eliminar(int x,int y);
 	void inicio();
 	bool siguiente();
 	void valores();
@@ -37,6 +37,9 @@ public:
 	void abrirArchivoLectura(char * Archivo);
 	void cerrarArchivo();
 	bool estaVacia();
+	void copiar( Matriz * matriz);
+	void insertar(Matriz * matriz);
+	void eliminar(Matriz * matriz);
 //	void insertarVecinos(Lista * nodo);
 	NodoY * buscar(int x, int y);
 //	Lista * busquedaOrdenada(int x,int y);
