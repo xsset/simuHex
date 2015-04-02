@@ -8,8 +8,8 @@
 #include "punto.h"
 #include "utileria.h"
 #include "debug.h"
-#include <wx/dcbuffer.h>
-#include <wx/pen.h>
+//#include <wx/dcbuffer.h>
+//#include <wx/pen.h>
 
 #ifndef HEXAGONO_H_
 #define HEXAGONO_H_
@@ -20,8 +20,8 @@ public:
 	~Hexagono();
 	int getLargoLado();
 	void setLargoLado(int largoLado);
-	void paint(bool lineas,wxColour  colorRelleno,wxColour  colorLineas ,wxBufferedPaintDC& dc);
-	void paintCoordenadas(wxBufferedPaintDC& dc);
+//	void paint(bool lineas,wxColour  colorRelleno,wxColour  colorLineas ,wxBufferedPaintDC& dc);
+//	void paintCoordenadas(wxBufferedPaintDC& dc);
 	void setZoom(int zoom);
 	int getZoom();
 	void calcularPuntos(int origenX,int origenY);
@@ -31,14 +31,14 @@ public:
 	bool getRelleno();
 	Punto * resta(Punto * puntoA,Punto * puntoB);
 	int productoPunto(Punto * puntoA,Punto * puntoB);
-	wxColour convertirColor(char color);
+//	wxColour convertirColor(char color);
 
 //	void click(char color);
 	Punto * centro;
 	bool relleno;
 	bool lineas;
 	char estado; //color
-	wxColour * colorLineas;
+	char colorLineas;
 	bool seleccionar;
 
 

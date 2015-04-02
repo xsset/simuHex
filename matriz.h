@@ -33,8 +33,8 @@ public:
 	void guardarMalla();
 	void cargarMalla();
 	void escribirArchivo(int x,int y,char valor);
-	void abrirArchivoEscritura(char * Archivo);
-	void abrirArchivoLectura(char * Archivo);
+	void abrirArchivoEscritura(const char * Archivo);
+	void abrirArchivoLectura(const char * Archivo);
 	void cerrarArchivo();
 	bool estaVacia();
 	void copiar( Matriz * matriz);
@@ -50,7 +50,7 @@ public:
 	NodoY * nodoHijoY;
 	NodoX * nodoPadreX;
 	DebugClass * debug;
-	char * nombreArchivo;
+	const char * nombreArchivo;
 
 //	ofstream ficheroSalida;
 //	ifstream ficheroEntrada;

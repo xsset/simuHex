@@ -22,8 +22,8 @@
 #include "cursor.h"
 #include "matriz.h"
 
-#include <wx/dcbuffer.h>
-#include <wx/pen.h>
+//#include "dcbuffer.h"
+//#include "pen.h"
 
 #define PORCENTAJE 1
 
@@ -37,6 +37,7 @@ class Malla
 {
 	public:
 		Malla( Cursor * puntero);
+		Malla();
 //		void hex(double initX, double initY,float largo,wxPen color ,bool relleno,wxBufferedPaintDC& dc );
 //		void paint(int largo,int ventanaAlto,int ventanaAncho,wxPen * color,int viewHexagonoX,int viewHexagonoY,NodoMov  * array,int mouseX,int mouseY,wxBufferedPaintDC& dc);
 //		int getHexX(int i,int largo);
@@ -44,7 +45,8 @@ class Malla
 //		bool inside(int initX ,int initY,int largo,int mouseX,int mouseY);
 //		wxPen convertir(char color);
 		void clickCoordenadas(int x,int y,char color);
-		void paint(int ventanaLargo, int ventanaAncho,bool lineas,int largoLado,int zoom,wxColour colorMargenes ,wxBufferedPaintDC& dc );
+//		void paint(int ventanaLargo, int ventanaAncho,bool lineas,int largoLado,int zoom,wxColour colorMargenes ,wxBufferedPaintDC& dc );
+		void interaccion();
 
 		int coordenadasMatrizX();
 		int coordenadasMatrizY();
@@ -53,6 +55,7 @@ class Malla
 //		void setNumeHexagonalX(int numHexagonalX);
 //		void setNumeHexagonalY(int numHexagonalY);
 		void evolucionar();
+		void evolucionar(int num);
 		void calculaVecindad(int x, int y , int valor,Matriz * matriz, Matriz * matrizTemporal,Matriz * vecinos);
 		void aleatorio();
 		void aleatorio(int x, int y);
@@ -83,8 +86,8 @@ class Malla
 		Matriz * mEliminar;
 		Matriz * mMover;
 		Matriz * mTemporal;
-		wxColour colorLineas;
-		wxColour colorRelleno;
+		char colorLineas;
+		char colorRelleno;
 		Hexagono *hexagono;
 		NodoY * actual;
 
@@ -110,6 +113,11 @@ class Malla
 		bool mover;
 		bool copiar;
 		bool eliminar;
+		int ventanaLargo;
+		int ventanaAncho;
+//		bool lineas;
+		int largoLado;
+		char colorMargenes;
 };
 
 //void hex(double initX, double initY,float largo,wxPen color ,bool relleno,wxBufferedPaintDC &dc );
