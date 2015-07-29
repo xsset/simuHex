@@ -418,7 +418,7 @@ void Matriz::escribirArchivo(int x, int y, char valor) {
 	fprintf(archivoTXT,"%d %d %d\n",x,y,valor);
 }
 
-void Matriz::abrirArchivoEscritura(char * Archivo ) {
+void Matriz::abrirArchivoEscritura(const char * Archivo ) {
 	 string frase= "Texto de extrada";
 //	 this->nombreArchivo = nombre;
 	 nombreArchivo = Archivo;
@@ -441,7 +441,7 @@ void Matriz::abrirArchivoEscritura(char * Archivo ) {
 
 
 }
-void Matriz::abrirArchivoLectura(char * Archivo ) {
+void Matriz::abrirArchivoLectura(const char * Archivo ) {
 	 string frase= "Texto de extrada";
 //	 this->nombreArchivo = nombre;
 	 nombreArchivo = Archivo;

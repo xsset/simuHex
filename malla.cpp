@@ -25,8 +25,8 @@ Malla::Malla(Cursor * cursor)
 	numHexagonalX = 0;
 	numHexagonalY = 0;
 	matriz = new Matriz();
-	colorRelleno = (*wxGREEN);
-	colorLineas = (*wxGREEN);
+	colorRelleno = 0;
+	colorLineas = 0;
 	viewInicialX = 0;
 	viewInicialY = 0;
 	viewFinalX = 0;
@@ -45,6 +45,7 @@ Malla::Malla(Cursor * cursor)
 	eliminar = false;
 	copiar = false;
 	cursorPorcentaje = new Cursor();
+	actual = NULL;
 
 	cursorAnteriorCelulas = new Cursor();
 	cursorAnteriorCelulas->x = -1;
@@ -53,218 +54,220 @@ Malla::Malla(Cursor * cursor)
 	cursorCelulas->x = 0;
 	cursorCelulas->y = 0;
 }
-void Malla::paint(int ventanaLargo, int ventanaAncho,bool lineas,int largoLado,int zoom,wxColour colorMargenes ,wxBufferedPaintDC& dc )
-{
-	this->Zoom = zoom;
-	this->lineas = lineas;
-	this->colorLineas = colorMargenes;
-	hexagono->setZoom(zoom);
-//	hexagono->seleccionar = false;
-	numHexagonalX =ventanaLargo/((HEXAGONO04X-HEXAGONO02X)*largoLado*zoom);
-	numHexagonalY =ventanaAncho/(HEXAGONO03Y*largoLado*zoom);
-	cursorPorcentaje->x = (cursor->x*100)/ventanaLargo;
-	cursorPorcentaje->y = (cursor->y*100)/ventanaAncho;
-
-//	if(curso)
-
-
-	if(cursorCelulas->x !=  coordenadaVirtualX(cursor->x) || cursorCelulas->y !=  coordenadaVirtualY(cursor->x,cursor->y) )
-	{
-		cursorAnteriorCelulas->x = cursorCelulas->x;
-		cursorAnteriorCelulas->y = cursorCelulas->y;
-		cursorCelulas->x = coordenadaVirtualX(cursor->x);
-		cursorCelulas->y = coordenadaVirtualY(cursor->x,cursor->y);
-
-		limitesPantalla();
-
-		if(mover || copiar)
-		{
-			if( (cursorAnteriorCelulas->x - cursorCelulas->x) == -1)//derecha 0-1
-			{
-//				debug->setDebugString("Derecha2\n");
-//				moverHexagonos(DERECHA,1,mLeidos,mMover);
-			}
-			else if( (cursorAnteriorCelulas->x - cursorCelulas->x) == 1)//izquierda 1-0
-			{
-//				debug->setDebugString("Izquierda2\n");
-//				moverHexagonos(IZQUIERDA,1,mLeidos,mMover);
-			}
-			else if( (cursorAnteriorCelulas->y - cursorCelulas->y) == 1)//ARRIBA 1-0
-			{
-//				debug->setDebugString("Arriba2\n");
-//				moverHexagonos(ARRIBA,1,mLeidos,mMover);
-			}
-			else if( (cursorAnteriorCelulas->y - cursorCelulas->y) == -1)//ABAJO 0-1
-			{
-//				debug->setDebugString("Abajo2\n");
-//				moverHexagonos(ABAJO,1,mLeidos,mMover);
-			}
-
-			if( ! mLeidos->estaVacia() && mover )
-			{
-//				mMover = new Matriz();
-				mMover->vaciar();
-				mTemporal->copiar(mLeidos);
-				moverHexagonoHacia(cursorCelulas,mLeidos,mMover);
-
-			}
-			if( ! mLeidos->estaVacia() && copiar )
-			{
-				//				mMover = new Matriz();
-				mCopiar->vaciar();
-//				mCopiar->copiar(mLeidos);
-				moverHexagonoHacia(cursorCelulas,mLeidos,mCopiar);
+//void Malla::imp
+//void Malla:paint(int ventanaLargo, int ventanaAncho,bool lineas,int largoLado,int zoom,wxColour colorMargenes ,wxBufferedPaintDC& dc );
+//{
+//
+////	this->Zoom = zoom;
+//	this->lineas = lineas;
+////	this->colorLineas = colorMargenes;
+////	hexagono->setZoom(zoom);
+////	hexagono->seleccionar = false;
+////	numHexagonalX =ventanaLargo /((HEXAGONO04X-HEXAGONO02X)*largoLado*zoom);
+////	numHexagonalY =ventanaAncho/(HEXAGONO03Y*largoLado*zoom);
+////	cursorPorcentaje->x = (cursor->x*100)/ventanaLargo;
+////	cursorPorcentaje->y = (cursor->y*100)/ventanaAncho;
+//
+////	if(curso)
+//
+//
+//	if(cursorCelulas->x !=  coordenadaVirtualX(cursor->x) || cursorCelulas->y !=  coordenadaVirtualY(cursor->x,cursor->y) )
+//	{
+//		cursorAnteriorCelulas->x = cursorCelulas->x;
+//		cursorAnteriorCelulas->y = cursorCelulas->y;
+//		cursorCelulas->x = coordenadaVirtualX(cursor->x);
+//		cursorCelulas->y = coordenadaVirtualY(cursor->x,cursor->y);
+//
+//		limitesPantalla();
+//
+//		if(mover || copiar)
+//		{
+//			if( (cursorAnteriorCelulas->x - cursorCelulas->x) == -1)//derecha 0-1
+//			{
+////				debug->setDebugString("Derecha2\n");
+////				moverHexagonos(DERECHA,1,mLeidos,mMover);
+//			}
+//			else if( (cursorAnteriorCelulas->x - cursorCelulas->x) == 1)//izquierda 1-0
+//			{
+////				debug->setDebugString("Izquierda2\n");
+////				moverHexagonos(IZQUIERDA,1,mLeidos,mMover);
+//			}
+//			else if( (cursorAnteriorCelulas->y - cursorCelulas->y) == 1)//ARRIBA 1-0
+//			{
+////				debug->setDebugString("Arriba2\n");
+////				moverHexagonos(ARRIBA,1,mLeidos,mMover);
+//			}
+//			else if( (cursorAnteriorCelulas->y - cursorCelulas->y) == -1)//ABAJO 0-1
+//			{
+////				debug->setDebugString("Abajo2\n");
+////				moverHexagonos(ABAJO,1,mLeidos,mMover);
+//			}
+//
+//			if( ! mLeidos->estaVacia() && mover )
+//			{
+////				mMover = new Matriz();
+//				mMover->vaciar();
+//				mTemporal->copiar(mLeidos);
 //				moverHexagonoHacia(cursorCelulas,mLeidos,mMover);
-
-			}
-
-		}
-	}
-//2 1 3     1 3 3  1 3 3
-	viewFinalX = viewInicialX + numHexagonalX;
-	viewFinalY =  viewInicialY + numHexagonalY;
-
-	largo = largoLado;
-	this->Zoom = zoom;
-
-//	viewInicialY = 20;
-
-	for(int x = viewInicialX; x < viewFinalX ; x++)
-	{
-		for(int y = viewInicialY; y < viewFinalY ; y++)
-		{
-//			PuntoInicial->y =
-			if(x %2)
-			{
-				PuntoInicial->x = (x-viewInicialX)*(HEXAGONO04X-HEXAGONO02X)*largoLado*zoom;
-				PuntoInicial->y = (y-viewInicialY)*HEXAGONO03Y*largoLado*zoom + HEXAGONO01Y*largoLado*zoom;
-			}
-			else
-			{
-				PuntoInicial->x = (x-viewInicialX)*(HEXAGONO04X-HEXAGONO02X )*largoLado*zoom;
-				PuntoInicial->y = (y-viewInicialY)*HEXAGONO03Y	*largoLado*zoom;
-			}
-//			debug->setDebugString("Nueva CoorY ");
-//			debug->setDebugString(PuntoInicial->y);
-//			debug->setDebugString("\n");
-			hexagono->calcularPuntos(PuntoInicial->x,PuntoInicial->y);
-			matriz->buscar(x,y);
-//			return;
-			if(matriz->nodoHijoY)
-			{
-				this->colorRelleno = hexagono->convertirColor(matriz->nodoHijoY->valor);
-				hexagono->relleno = true;
-				hexagono->estado = matriz->nodoHijoY->valor;
-			}
-			else
-			{
-				hexagono->relleno = false;
-			}
-
-			if (hexagono->adentro(cursor))
-			{
-				hexagono->seleccionar = true;
-				this->colorLineas =  hexagono->convertirColor(cursor->color);
-
-			}
-			else
-			{
-				this->colorLineas = colorMargenes;
-			}
-			if( mover && mMover)
-			{
-				if(!mMover->estaVacia())
-				{
-//					debug->setDebugString("Mover Entrar\n");
-					if(!vecinosPersistentes)
-					{
-						mLeidos->vaciar();
-					}
-					else if(mMover->buscar(x,y) )
-					{
-//						debug->setDebugString("Mover Encontrar\n");
-						this->colorLineas =  hexagono->convertirColor(COLORSELECCION);
-						hexagono->seleccionar = true;
-						this->colorRelleno = hexagono->convertirColor(COLORSELECCION);
-						hexagono->setRelleno(TRUE);
-					}
-				}
-			}
-			else if( copiar && mCopiar)
-			{
-				if(!mCopiar->estaVacia())
-				{
-					//					debug->setDebugString("Mover Entrar\n");
-					if(!vecinosPersistentes)
-					{
-						mCopiar->vaciar();
-					}
-					else if(mCopiar->buscar(x,y) )
-					{
-						this->colorLineas =  hexagono->convertirColor(COLORSELECCION);
-						hexagono->seleccionar = true;
-						this->colorRelleno = hexagono->convertirColor(COLORSELECCION);
-						hexagono->setRelleno(TRUE);
-					}
-				}
-			}
-
-			else if(vecinos)
-			{
-				actual = matriz->buscar(cursorCelulas->x,cursorCelulas->y);
-//				debug->setDebugString("Vecinos\n");
-				if(!actual && !vecinosPersistentes)
-				{
-//					debug->setDebugString("existe Actual\n");
-//						debug->setDebugString("Vaciar\n");
-					mLeidos->vaciar();
-				}
-
-				else if(mLeidos->estaVacia())
-				{
-					if(actual)
-					{
-						if( actual->valor != BLANCO )
-						{
-
-							buscarVecinosMouse();
-							//						mMover->copiar(mLeidos);
-						}
-					}
-					//											mLeidos->valores();
-				}
-				else
-				{
-					actual = mLeidos->buscar(x,y);
-					if(actual)
-					{
-						if(actual->valor != BLANCO || vecinosPersistentes )
-						{
-//							debug->setDebugString("Persistentes\n");
-							this->colorLineas =  hexagono->convertirColor(COLORSELECCION);
-							hexagono->seleccionar = true;
-							//					debug->setDebugString("Listar Vecinos\n");
-							//					mVecinos->valores();
-							//					debug->setDebugString("Fin de la lista Vecinos\n");
-							//					mVecinos->vaciar();
-							this->colorRelleno = hexagono->convertirColor(COLORSELECCION);
-							hexagono->setRelleno(TRUE);
-						}
-						 else
-						 {
-//							 debug->setDebugString("ELSE2\n");
-						 }
-					}
-				}
-			}
-			hexagono->paint(lineas,this->colorRelleno,colorLineas, dc);
-			hexagono->setRelleno(false);
-			hexagono->seleccionar = false;
-
-
-		}
-	}
-}
+//
+//			}
+//			if( ! mLeidos->estaVacia() && copiar )
+//			{
+//				//				mMover = new Matriz();
+//				mCopiar->vaciar();
+////				mCopiar->copiar(mLeidos);
+//				moverHexagonoHacia(cursorCelulas,mLeidos,mCopiar);
+////				moverHexagonoHacia(cursorCelulas,mLeidos,mMover);
+//
+//			}
+//
+//		}
+//	}
+////2 1 3     1 3 3  1 3 3
+//	viewFinalX = viewInicialX + numHexagonalX;
+//	viewFinalY =  viewInicialY + numHexagonalY;
+//
+//	largo = largoLado;
+//	this->Zoom = zoom;
+//
+////	viewInicialY = 20;
+//
+//	for(int x = viewInicialX; x < viewFinalX ; x++)
+//	{
+//		for(int y = viewInicialY; y < viewFinalY ; y++)
+//		{
+////			PuntoInicial->y =
+//			if(x %2)
+//			{
+//				PuntoInicial->x = (x-viewInicialX)*(HEXAGONO04X-HEXAGONO02X)*largoLado*zoom;
+//				PuntoInicial->y = (y-viewInicialY)*HEXAGONO03Y*largoLado*zoom + HEXAGONO01Y*largoLado*zoom;
+//			}
+//			else
+//			{
+//				PuntoInicial->x = (x-viewInicialX)*(HEXAGONO04X-HEXAGONO02X )*largoLado*zoom;
+//				PuntoInicial->y = (y-viewInicialY)*HEXAGONO03Y	*largoLado*zoom;
+//			}
+////			debug->setDebugString("Nueva CoorY ");
+////			debug->setDebugString(PuntoInicial->y);
+////			debug->setDebugString("\n");
+//			hexagono->calcularPuntos(PuntoInicial->x,PuntoInicial->y);
+//			matriz->buscar(x,y);
+////			return;
+//			if(matriz->nodoHijoY)
+//			{
+//				this->colorRelleno = hexagono->convertirColor(matriz->nodoHijoY->valor);
+//				hexagono->relleno = true;
+//				hexagono->estado = matriz->nodoHijoY->valor;
+//			}
+//			else
+//			{
+//				hexagono->relleno = false;
+//			}
+//
+//			if (hexagono->adentro(cursor))
+//			{
+//				hexagono->seleccionar = true;
+//				this->colorLineas =  hexagono->convertirColor(cursor->color);
+//
+//			}
+//			else
+//			{
+//				this->colorLineas = colorMargenes;
+//			}
+//			if( mover && mMover)
+//			{
+//				if(!mMover->estaVacia())
+//				{
+////					debug->setDebugString("Mover Entrar\n");
+//					if(!vecinosPersistentes)
+//					{
+//						mLeidos->vaciar();
+//					}
+//					else if(mMover->buscar(x,y) )
+//					{
+////						debug->setDebugString("Mover Encontrar\n");
+//						this->colorLineas =  hexagono->convertirColor(COLORSELECCION);
+//						hexagono->seleccionar = true;
+//						this->colorRelleno = hexagono->convertirColor(COLORSELECCION);
+//						hexagono->setRelleno(TRUE);
+//					}
+//				}
+//			}
+//			else if( copiar && mCopiar)
+//			{
+//				if(!mCopiar->estaVacia())
+//				{
+//					//					debug->setDebugString("Mover Entrar\n");
+//					if(!vecinosPersistentes)
+//					{
+//						mCopiar->vaciar();
+//					}
+//					else if(mCopiar->buscar(x,y) )
+//					{
+//						this->colorLineas =  hexagono->convertirColor(COLORSELECCION);
+//						hexagono->seleccionar = true;
+//						this->colorRelleno = hexagono->convertirColor(COLORSELECCION);
+//						hexagono->setRelleno(TRUE);
+//					}
+//				}
+//			}
+//
+//			else if(vecinos)
+//			{
+//				actual = matriz->buscar(cursorCelulas->x,cursorCelulas->y);
+////				debug->setDebugString("Vecinos\n");
+//				if(!actual && !vecinosPersistentes)
+//				{
+////					debug->setDebugString("existe Actual\n");
+////						debug->setDebugString("Vaciar\n");
+//					mLeidos->vaciar();
+//				}
+//
+//				else if(mLeidos->estaVacia())
+//				{
+//					if(actual)
+//					{
+//						if( actual->valor != BLANCO )
+//						{
+//
+//							buscarVecinosMouse();
+//							//						mMover->copiar(mLeidos);
+//						}
+//					}
+//					//											mLeidos->valores();
+//				}
+//				else
+//				{
+//					actual = mLeidos->buscar(x,y);
+//					if(actual)
+//					{
+//						if(actual->valor != BLANCO || vecinosPersistentes )
+//						{
+////							debug->setDebugString("Persistentes\n");
+//							this->colorLineas =  hexagono->convertirColor(COLORSELECCION);
+//							hexagono->seleccionar = true;
+//							//					debug->setDebugString("Listar Vecinos\n");
+//							//					mVecinos->valores();
+//							//					debug->setDebugString("Fin de la lista Vecinos\n");
+//							//					mVecinos->vaciar();
+//							this->colorRelleno = hexagono->convertirColor(COLORSELECCION);
+//							hexagono->setRelleno(TRUE);
+//						}
+//						 else
+//						 {
+////							 debug->setDebugString("ELSE2\n");
+//						 }
+//					}
+//				}
+//			}
+//			hexagono->paint(lineas,this->colorRelleno,colorLineas, dc);
+//			hexagono->setRelleno(false);
+//			hexagono->seleccionar = false;
+//
+//
+//		}
+//	}
+//}
 
 void Malla::clickCoordenadas(int x,int y,char color)
 {
@@ -404,6 +407,17 @@ int Malla::coordenadasMatrizY() {
 //	Matriz Y :210-2
 
 
+}
+void Malla::evolucionar(int num)
+{
+	int i = 0;
+	printf("negro: %i,rojo: %i,blanco %i\n",this->matriz->lista->nodoNegro,this->matriz->lista->nodoRojo,this->matriz->lista->nodoBlanco);
+	for(i = 0; i < num ; i++)
+	{
+		printf("evolucionar %i\n",i);
+		evolucionar();
+	}
+	printf("negro: %i,rojo: %i,blanco %i\n",this->matriz->lista->nodoNegro,this->matriz->lista->nodoRojo,this->matriz->lista->nodoBlanco);
 }
 
 void Malla::evolucionar() {
@@ -1244,10 +1258,49 @@ void Malla::eliminarMatriz() {
 //	eliminar
 }
 
-void Malla::accionMalla(char accion) {
-}
+Malla::Malla() {
+	this->debug= new DebugClass();
+	this->cursor = cursor;
+	this->Zoom = 1;
+	this->largo = 1;
+	hexagono = new Hexagono(0,0,1,Zoom);
+	lineas = true;
+	numHexagonalX = 0;
+	numHexagonalY = 0;
+	matriz = new Matriz();
+	colorRelleno = 0;
+	colorLineas = 0;
+	viewInicialX = 0;
+	viewInicialY = 0;
+	viewFinalX = 0;
+	viewFinalY = 0;
+	PuntoInicial = new Punto();
+	evoluciones = 0;
+	vecinos = false;
+	mVecinos = new Matriz();
+	mLeidos = new Matriz();
+	vecinosPersistentes = false;
+	mover = false;
+	mCopiar = new Matriz();
+	mMover = new Matriz();
+	mEliminar = new Matriz();
+	mTemporal = new Matriz();
+	eliminar = false;
+	copiar = false;
+	cursorPorcentaje = new Cursor();
+	actual = NULL;
 
-void Malla::calcularPorcentaje() {
+	cursorAnteriorCelulas = new Cursor();
+	cursorAnteriorCelulas->x = -1;
+	cursorAnteriorCelulas->y = -1;
+	cursorCelulas = new Cursor();
+	cursorCelulas->x = 0;
+	cursorCelulas->y = 0;
+	largoLado = 1;
+	ventanaAncho = 0;
+	ventanaLargo = 0;
+	colorMargenes = 0;
+
 }
 
 void Malla::limitesPantalla() {

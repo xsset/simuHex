@@ -8,20 +8,11 @@
 #include "debug.h"
 
 
- using namespace std;
+// using namespace std;
 
 DebugClass::DebugClass()
 {
 	activo = false;
-}
-
-void DebugClass::setDebugString(std::string srtingDebug)
-{
-	if(activo)
-		return;
-	debugString = srtingDebug;
-
-	cout << srtingDebug;
 }
 
 void DebugClass::setDebugString(int intDebug)
@@ -29,9 +20,9 @@ void DebugClass::setDebugString(int intDebug)
 	if(activo)
 		return;
 
-	debugString =wxString::Format(wxT("%i"),intDebug);
 
-	cout << intDebug;
+//	cout << intDebug;
+	printf("%i",intDebug);
 }
 
 void DebugClass::setDebugString(float floatDebug)
@@ -39,33 +30,28 @@ void DebugClass::setDebugString(float floatDebug)
 	if(activo)
 		return;
 
-	debugString =wxString::Format(wxT("%f"),floatDebug);
 
-	cout << floatDebug;
+//	cout << floatDebug;
 }
 
 void DebugClass::setDebugString(char charDebug)
 {
-	if(activo)
-		return;
+//	if(activo)
+//		return;
+	printf("%c",charDebug);
 
-//	debugString =wxString::Format(wxT("%f"),floatDebug);
 //	int dato = charDebug;
-	cout << charDebug;
+//	cout << charDebug;
 }
-void DebugClass::setDebugString(char * charDebug)
+void DebugClass::setDebugString(const char * charDebug)
 {
-	if(activo)
-		return;
+//	if(activo)
+//		return;
 
-//	debugString =wxString::Format(wxT("%f"),floatDebug);
+	printf("%s",charDebug);
 //	int dato = charDebug;
-	cout << charDebug;
+//	cout << charDebug;
 }
 
-std::string DebugClass::getDebugString()
-{
-	return debugString;
-}
 
 

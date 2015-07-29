@@ -24,3 +24,5 @@ NodoY::~NodoY() {
 	// TODO Auto-generated destructor stub
 }
 
+
+

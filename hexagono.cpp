@@ -80,71 +80,71 @@ void Hexagono::setZoom(int zoom)
 	this->zoom = zoom;
 }
 
-void Hexagono::paint(bool lineas,wxColour  colorRelleno,wxColour  colorLineas ,wxBufferedPaintDC& dc)
-{
-	wxPoint puntos[6];
-//	this->lineas = lineas;
-//	this->colorLineas = &colorLineas;
-//	this->seleccionar = seleccionar;
-
-	puntos[0]= wxPoint(coordenadas[0].getX()  , coordenadas[0].getY());
-	puntos[1]= wxPoint(coordenadas[1].getX()  , coordenadas[1].getY());
-	puntos[2]= wxPoint(coordenadas[2].getX()  , coordenadas[2].getY());
-	puntos[3]= wxPoint(coordenadas[3].getX()  , coordenadas[3].getY());
-	puntos[4]= wxPoint(coordenadas[4].getX()  , coordenadas[4].getY());
-	puntos[5]= wxPoint(coordenadas[5].getX()  , coordenadas[5].getY());
-
-
-
-
-	if(relleno)
-	{
-		wxBrush brushHatch(colorRelleno, wxSOLID);
-		dc.SetBrush(brushHatch);
-	}
-	else
-	{
-		wxBrush brushHatch(colorRelleno, wxTRANSPARENT);
-		dc.SetBrush(brushHatch);
-	}
-
-
-	wxPen  temPen = dc.GetPen();
-	if(!lineas)
-	{
-		wxPen * pen = new wxPen(colorLineas,1,wxTRANSPARENT);
-
-		dc.DrawPoint(puntos[0]);
-		dc.DrawPoint(puntos[1]);
-		dc.DrawPoint(puntos[2]);
-		dc.DrawPoint(puntos[3]);
-		dc.DrawPoint(puntos[4]);
-		dc.DrawPoint(puntos[5]);
-
-		if(this->seleccionar)
-			 pen = new wxPen(colorLineas,1,wxSOLID);
-//		else
-		dc.SetPen(*pen);
-		dc.DrawPolygon(WXSIZEOF(puntos), puntos);   //(WXSIZEOF(punto)-2, punto, -intlargo, -intlargo);
-
-	}
-	else
-	{
-		wxPen * pen = new wxPen(colorLineas,1,wxSOLID);
-		dc.SetPen(*pen);
-		dc.DrawPolygon(WXSIZEOF(puntos), puntos);
-	}
-	dc.SetPen(temPen);
-//	if(this->seleccionar)
-//		{
-////		wxPen  temPen = dc.GetPen();
+//void Hexagono::paint(bool lineas,wxColour  colorRelleno,wxColour  colorLineas ,wxBufferedPaintDC& dc)
+//{
+//	wxPoint puntos[6];
+////	this->lineas = lineas;
+////	this->colorLineas = &colorLineas;
+////	this->seleccionar = seleccionar;
+//
+//	puntos[0]= wxPoint(coordenadas[0].getX()  , coordenadas[0].getY());
+//	puntos[1]= wxPoint(coordenadas[1].getX()  , coordenadas[1].getY());
+//	puntos[2]= wxPoint(coordenadas[2].getX()  , coordenadas[2].getY());
+//	puntos[3]= wxPoint(coordenadas[3].getX()  , coordenadas[3].getY());
+//	puntos[4]= wxPoint(coordenadas[4].getX()  , coordenadas[4].getY());
+//	puntos[5]= wxPoint(coordenadas[5].getX()  , coordenadas[5].getY());
+//
+//
+//
+//
+//	if(relleno)
+//	{
+//		wxBrush brushHatch(colorRelleno, wxSOLID);
+//		dc.SetBrush(brushHatch);
+//	}
+//	else
+//	{
+//		wxBrush brushHatch(colorRelleno, wxTRANSPARENT);
+//		dc.SetBrush(brushHatch);
+//	}
+//
+//
+//	wxPen  temPen = dc.GetPen();
+//	if(!lineas)
+//	{
+//		wxPen * pen = new wxPen(colorLineas,1,wxTRANSPARENT);
+//
+//		dc.DrawPoint(puntos[0]);
+//		dc.DrawPoint(puntos[1]);
+//		dc.DrawPoint(puntos[2]);
+//		dc.DrawPoint(puntos[3]);
+//		dc.DrawPoint(puntos[4]);
+//		dc.DrawPoint(puntos[5]);
+//
+//		if(this->seleccionar)
+//			 pen = new wxPen(colorLineas,1,wxSOLID);
+////		else
 //		dc.SetPen(*pen);
 //		dc.DrawPolygon(WXSIZEOF(puntos), puntos);   //(WXSIZEOF(punto)-2, punto, -intlargo, -intlargo);
-//		dc.SetPen(temPen);
-//		}
-
-
-}
+//
+//	}
+//	else
+//	{
+//		wxPen * pen = new wxPen(colorLineas,1,wxSOLID);
+//		dc.SetPen(*pen);
+//		dc.DrawPolygon(WXSIZEOF(puntos), puntos);
+//	}
+//	dc.SetPen(temPen);
+////	if(this->seleccionar)
+////		{
+//////		wxPen  temPen = dc.GetPen();
+////		dc.SetPen(*pen);
+////		dc.DrawPolygon(WXSIZEOF(puntos), puntos);   //(WXSIZEOF(punto)-2, punto, -intlargo, -intlargo);
+////		dc.SetPen(temPen);
+////		}
+//
+//
+//}
 bool Hexagono::adentro(Punto * mouse)
 {
 //	DebugClass * debug = new DebugClass;
@@ -226,51 +226,51 @@ Punto* Hexagono::resta(Punto * puntoA,Punto * puntoB)
 	return punto;
 }
 
-void Hexagono::paintCoordenadas(wxBufferedPaintDC& dc)
-{
-	 wxString msg;
-	 dc.SetTextForeground(*wxYELLOW );
-
-	 msg =  wxString::Format(wxT("(%i,%i)"), coordenadas[0].getX(), coordenadas[0].getY());
-	 dc.DrawText(msg,  coordenadas[0].getX(), coordenadas[0].getY());
-
-	 msg =  wxString::Format(wxT("(%i,%i)"), coordenadas[1].getX(), coordenadas[1].getY());
-	 dc.DrawText(msg,  coordenadas[1].getX(), coordenadas[1].getY());
-
-	 msg =  wxString::Format(wxT("(%i,%i)"), coordenadas[2].getX(), coordenadas[2].getY());
-	 dc.DrawText(msg,  coordenadas[2].getX(), coordenadas[2].getY());
-
-	 msg =  wxString::Format(wxT("(%i,%i)"), coordenadas[3].getX(), coordenadas[3].getY());
-	 dc.DrawText(msg,  coordenadas[3].getX(), coordenadas[3].getY());
-
-	 msg =  wxString::Format(wxT("(%i,%i)"), coordenadas[4].getX(), coordenadas[4].getY());
-	 dc.DrawText(msg,  coordenadas[4].getX(), coordenadas[4].getY());
-
-	 msg =  wxString::Format(wxT("(%i,%i)"), coordenadas[5].getX(), coordenadas[5].getY());
-	 dc.DrawText(msg,  coordenadas[5].getX(), coordenadas[5].getY());
-
-	 msg =  wxString::Format(wxT("(%i,%i)"), centro->x, centro->y);
-	 dc.DrawText(msg,  centro->x, centro->y);
-}
-wxColour Hexagono::convertirColor(char color)
-{
-	switch (color) {
-	case BLANCO:
-		return (*wxWHITE);
-		break;
-	case NEGRO:
-		return (*wxBLACK);
-		break;
-	case ROJO:
-		return (*wxRED);
-		break;
-	case COLORSELECCION:
-		return (*wxBLUE);
-		break;
-
-	}
-	return (*wxGREEN);
-}
+//void Hexagono::paintCoordenadas(wxBufferedPaintDC& dc)
+//{
+//	 wxString msg;
+//	 dc.SetTextForeground(*wxYELLOW );
+//
+//	 msg =  wxString::Format(wxT("(%i,%i)"), coordenadas[0].getX(), coordenadas[0].getY());
+//	 dc.DrawText(msg,  coordenadas[0].getX(), coordenadas[0].getY());
+//
+//	 msg =  wxString::Format(wxT("(%i,%i)"), coordenadas[1].getX(), coordenadas[1].getY());
+//	 dc.DrawText(msg,  coordenadas[1].getX(), coordenadas[1].getY());
+//
+//	 msg =  wxString::Format(wxT("(%i,%i)"), coordenadas[2].getX(), coordenadas[2].getY());
+//	 dc.DrawText(msg,  coordenadas[2].getX(), coordenadas[2].getY());
+//
+//	 msg =  wxString::Format(wxT("(%i,%i)"), coordenadas[3].getX(), coordenadas[3].getY());
+//	 dc.DrawText(msg,  coordenadas[3].getX(), coordenadas[3].getY());
+//
+//	 msg =  wxString::Format(wxT("(%i,%i)"), coordenadas[4].getX(), coordenadas[4].getY());
+//	 dc.DrawText(msg,  coordenadas[4].getX(), coordenadas[4].getY());
+//
+//	 msg =  wxString::Format(wxT("(%i,%i)"), coordenadas[5].getX(), coordenadas[5].getY());
+//	 dc.DrawText(msg,  coordenadas[5].getX(), coordenadas[5].getY());
+//
+//	 msg =  wxString::Format(wxT("(%i,%i)"), centro->x, centro->y);
+//	 dc.DrawText(msg,  centro->x, centro->y);
+//}
+//wxColour Hexagono::convertirColor(char color)
+//{
+//	switch (color) {
+//	case BLANCO:
+//		return (*wxWHITE);
+//		break;
+//	case NEGRO:
+//		return (*wxBLACK);
+//		break;
+//	case ROJO:
+//		return (*wxRED);
+//		break;
+//	case COLORSELECCION:
+//		return (*wxBLUE);
+//		break;
+//
+//	}
+//	return (*wxGREEN);
+//}
 
 
 
