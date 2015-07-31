@@ -1,10 +1,10 @@
 .KEEP.STATE: 
 
-CC = gcc
-OBJECTS = malla.o debug.o punto.o hexagono.o cursor.o listas.o matriz.o nodo.o nodoX.o nodoY.o panelPrincipal.o panelDirectorio.o 
+CC = g++
+OBJECTS = malla.o debug.o punto.o hexagono.o cursor.o listas.o matriz.o nodo.o nodoX.o nodoY.o 
 CFLAGS  = -Wall -Wextra -ansi -pedantic -g
-INC = -I/usr/local/lib/wx/include/gtk2-unicode-3.0 -I/usr/local/include/wx-3.0 -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXGTK__ -pthread
-LIBS = -L/usr/local/lib -pthread   -lwx_gtk2u_xrc-3.0 -lwx_gtk2u_html-3.0 -lwx_gtk2u_qa-3.0 -lwx_gtk2u_adv-3.0 -lwx_gtk2u_core-3.0 -lwx_baseu_xml-3.0 -lwx_baseu_net-3.0 -lwx_baseu-3.0 
+INC = 
+LIBS =  
 
 TARGET = hexagonal
 all :$(TARGET)
